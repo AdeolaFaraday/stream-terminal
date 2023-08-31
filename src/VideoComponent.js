@@ -17,7 +17,8 @@ const VideoComponent = ({ mediaStream }) => {
 
     return <video
         ref={videoRef}
-        autoPlay
+        playsInline
+        autoPlay={true}
         muted
         className="w-full h-auto rounded bg-neutral-950"
     />;
