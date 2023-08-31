@@ -138,7 +138,7 @@ const App = () => {
           </select>
         </div>
         <div className='mt-4'>
-          <video id="video-player" ref={videoRef} muted className='h-full bg-neutral-950 w-full rounded'></video>
+          <video id="video-player" ref={videoRef} autoPlay={true} muted className='h-full bg-neutral-950 w-full rounded'></video>
         </div>
         <div className='flex justify-center'>
           <button
