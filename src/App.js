@@ -100,6 +100,9 @@ const App = () => {
     const localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
     // Create a local video track from the video captured by a camera.
     const localVideoTrack = await AgoraRTC.createCameraVideoTrack();
+    videoRef.current.srcObject = new MediaStream([
+      localVideoTrack?._originMediaStreamTrack
+    ]);
     await agoraEngine.publish([localAudioTrack, localVideoTrack]);
     console.log("publish success!");
   }
