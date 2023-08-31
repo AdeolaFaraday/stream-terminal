@@ -75,17 +75,17 @@ const App = () => {
       await agoraEngine.renewToken(options.token);
     });
 
-    const video = document.getElementById('video-player');
-    if (
-      /iPad|iPhone|iPod/.test(navigator.userAgent) &&
-      !window.MSStream
-    ) {
-      video.muted = true;
-      video.play();
-      video.onplaying = function () {
-        video.muted = false;
-      };
-    }
+    // const video = document.getElementById('video-player');
+    // if (
+    //   /iPad|iPhone|iPod/.test(navigator.userAgent) &&
+    //   !window.MSStream
+    // ) {
+    //   video.muted = true;
+    //   video.play();
+    //   video.onplaying = function () {
+    //     video.muted = false;
+    //   };
+    // }
   }, [options?.uid]);
 
   const startWebcamStream = async () => {
@@ -141,7 +141,7 @@ const App = () => {
           </select>
         </div>
         <div className='mt-4'>
-          <video id="video-player" ref={videoRef} playsInline autoPlay={true} muted className='h-full bg-neutral-950 w-full rounded'></video>
+          <video id="video-player" ref={videoRef} autoPlay={true} muted className='h-full-950 w-full rounded'></video>
         </div>
         <div className='flex justify-center'>
           <button
