@@ -91,14 +91,14 @@ const App = () => {
   const startWebcamStream = async () => {
     try {
       // const localVideoTrack = await AgoraRTC.createCameraVideoTrack();
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true })
+      // const stream = await navigator.mediaDevices.getUserMedia({ video: true })
 
       if (videoRef.current) {
-        videoRef.current.srcObject = stream
+        // videoRef.current.srcObject = stream
         // new MediaStream([
         //   localVideoTrack?._originMediaStreamTrack
         // ]);
-        // startStream()
+        startStream()
       }
     } catch (error) {
       console.error('Error accessing webcam:', error);
@@ -114,9 +114,11 @@ const App = () => {
     const localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
     // Create a local video track from the video captured by a camera.
     const localVideoTrack = await AgoraRTC.createCameraVideoTrack();
-    // videoRef.current.srcObject = new MediaStream([
-    //   localVideoTrack?._originMediaStreamTrack
-    // ]);
+    if (videoRef.current) {
+      videoRef.current.srcObject = new MediaStream([
+        localVideoTrack?._originMediaStreamTrack
+      ]);
+    }
     await agoraEngine.publish([localAudioTrack, localVideoTrack]);
     console.log("publish success!");
   }
