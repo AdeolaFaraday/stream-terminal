@@ -75,17 +75,17 @@ const App = () => {
       await agoraEngine.renewToken(options.token);
     });
 
-    // const video = document.getElementById('video-player');
-    // if (
-    //   /iPad|iPhone|iPod/.test(navigator.userAgent) &&
-    //   !window.MSStream
-    // ) {
-    //   video.muted = true;
-    //   video.play();
-    //   video.onplaying = function () {
-    //     video.muted = false;
-    //   };
-    // }
+    const video = document.getElementById('video-player');
+    if (
+      /iPad|iPhone|iPod/.test(navigator.userAgent) &&
+      !window.MSStream
+    ) {
+      video.muted = true;
+      video.play();
+      video.onplaying = function () {
+        video.muted = false;
+      };
+    }
   }, [options?.uid]);
 
   const startWebcamStream = async () => {
