@@ -93,9 +93,16 @@ const App = () => {
       const localVideoTrack = await AgoraRTC.createCameraVideoTrack();
 
       if (videoRef.current) {
-        videoRef.current.srcObject = new MediaStream([
+        let video = videoRef.current
+        video.srcObject = new MediaStream([
           localVideoTrack?._originMediaStreamTrack
         ]);
+        video.addEventListener("loadedmetadata", () => {
+          video.play()
+        })
+        // videoRef.current.srcObject = new MediaStream([
+        //   localVideoTrack?._originMediaStreamTrack
+        // ]);
         startStream()
       }
     } catch (error) {
