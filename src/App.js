@@ -74,6 +74,18 @@ const App = () => {
       setOptions({ ...options, token })
       await agoraEngine.renewToken(options.token);
     });
+
+    const video = document.getElementById('video-player');
+    if (
+      /iPad|iPhone|iPod/.test(navigator.userAgent) &&
+      !window.MSStream
+    ) {
+      video.muted = true;
+      video.play();
+      video.onplaying = function () {
+        video.muted = false;
+      };
+    }
   }, [options?.uid]);
 
   const startWebcamStream = async () => {
@@ -126,7 +138,7 @@ const App = () => {
           </select>
         </div>
         <div className='mt-4'>
-          <video ref={videoRef} autoPlay muted className='h-full bg-neutral-950 w-full rounded'></video>
+          <video id="video-player" ref={videoRef} autoPlay muted className='h-full bg-neutral-950 w-full rounded'></video>
         </div>
         <div className='flex justify-center'>
           <button
