@@ -123,7 +123,7 @@ const App = () => {
           </select>
         </div>
         <div className='mt-4'>
-          <video ref={videoRef} autoPlay playsInline muted className='h-full bg-neutral-950 w-full rounded'></video>
+          <video ref={videoRef} autoPlay muted className='h-full bg-neutral-950 w-full rounded'></video>
         </div>
         <div className='flex justify-center'>
           <button
