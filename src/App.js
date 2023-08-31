@@ -63,8 +63,6 @@ const App = () => {
     serverUrl: "https://agora-token-service-production-ee00.up.railway.app",
   })
 
-  const [localVideoTrack, setLocalVideoTrack] = useState(null)
-
   const agoraEngine = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
   useEffect(() => {
@@ -82,12 +80,10 @@ const App = () => {
     try {
       const localVideoTrack = await AgoraRTC.createCameraVideoTrack();
 
-      setLocalVideoTrack(localVideoTrack)
-
       if (videoRef.current) {
         videoRef.current.srcObject = new MediaStream([
           localVideoTrack?._originMediaStreamTrack
-        ]);
+        ]);;
         startStream()
       }
     } catch (error) {
@@ -101,10 +97,10 @@ const App = () => {
     // Create a local audio track from the audio sampled by a microphone.
     const data = await agoraEngine.join(options.appId, options.channel, options.token, options.uid)
     console.log({ data });
-    // const localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+    const localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
     // Create a local video track from the video captured by a camera.
-    // const localVideoTrack = await AgoraRTC.createCameraVideoTrack();
-    await agoraEngine.publish([localVideoTrack]);
+    const localVideoTrack = await AgoraRTC.createCameraVideoTrack();
+    await agoraEngine.publish([localAudioTrack, localVideoTrack]);
     console.log("publish success!");
   }
 
