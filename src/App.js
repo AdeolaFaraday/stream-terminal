@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import AgoraRTC from "agora-rtc-sdk-ng";
 import './App.css';
-import axios from 'axios';
 import { FetchToken } from './agora';
 
 const App = () => {

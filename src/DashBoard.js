@@ -24,8 +24,6 @@ const DashBoardPage = () => {
         true, true
     ]);
 
-    const videoRef = useRef(null);
-
     const agoraEngine = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
     useEffect(() => {
