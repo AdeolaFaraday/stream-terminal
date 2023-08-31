@@ -90,20 +90,15 @@ const App = () => {
 
   const startWebcamStream = async () => {
     try {
-      const localVideoTrack = await AgoraRTC.createCameraVideoTrack();
+      // const localVideoTrack = await AgoraRTC.createCameraVideoTrack();
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true })
 
       if (videoRef.current) {
-        let video = videoRef.current
-        video.srcObject = new MediaStream([
-          localVideoTrack?._originMediaStreamTrack
-        ]);
-        video.addEventListener("loadedmetadata", () => {
-          video.play()
-        })
-        // videoRef.current.srcObject = new MediaStream([
+        videoRef.current.srcObject = stream
+        // new MediaStream([
         //   localVideoTrack?._originMediaStreamTrack
         // ]);
-        startStream()
+        // startStream()
       }
     } catch (error) {
       console.error('Error accessing webcam:', error);
@@ -145,7 +140,7 @@ const App = () => {
           </select>
         </div>
         <div className='mt-4'>
-          <video id="video-player" ref={videoRef} autoPlay={true} muted className='h-full bg-neutral-950 w-full rounded'></video>
+          <video id="video-player" ref={videoRef} playsInline autoPlay={true} muted className='h-full bg-neutral-950 w-full rounded'></video>
         </div>
         <div className='flex justify-center'>
           <button
