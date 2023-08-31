@@ -11,7 +11,7 @@ const DashBoardPage = () => {
         // Set the channel name.
         channel: "first-channel",
         // Pass your temp token here.
-        token: "007eJxTYLjw8nfMfYu0fQYzotnu53VYHm2qFbrvPOdvXHO+q4bkuyQFhlTLJGOL5MTExCRzcxNji7REMxNjQ7OUxBTjpKSURAvDg7s/pFw8+SHl+4NFzIwMjAwsQAwCTGCSGUyygElehrTMouIS3eSMxLy81BwmBkNDACrEJ9w=",
+        token: "007eJxTYKiUdjsfoz774/6bDGYmRySMdLu//jMPfHlwUkjSAXM2dx0FhlTLJGOL5MTExCRzcxNji7REMxNjQ7OUxBTjpKSURAvDQ1M+pFxa9CFFW6KegREIWYAYBJjAJDOYZAGTvAxpmUXFJbrJGYl5eak5jAwGALzOI8c=",
         // Set the user ID.
         uid: 11,
         ExpireTime: 3600,
