@@ -90,12 +90,15 @@ const App = () => {
 
   const startWebcamStream = async () => {
     try {
-      const localVideoTrack = await AgoraRTC.createCameraVideoTrack();
+      // const localVideoTrack = await AgoraRTC.createCameraVideoTrack();
+
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 
       if (videoRef.current) {
-        videoRef.current.srcObject = new MediaStream([
-          localVideoTrack?._originMediaStreamTrack
-        ]);
+        videoRef.current.srcObject = stream;
+        // new MediaStream([
+        //   localVideoTrack?._originMediaStreamTrack
+        // ]);
         startStream()
       }
     } catch (error) {
