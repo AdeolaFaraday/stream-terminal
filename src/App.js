@@ -65,7 +65,6 @@ const App = () => {
   const agoraEngine = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
   useEffect(() => {
-    console.log({ options });
     FetchToken(options?.uid, options?.channel).then((token) => {
       setOptions({ ...options, token })
     });

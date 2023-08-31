@@ -1,5 +1,5 @@
 import AgoraRTC from 'agora-rtc-sdk-ng';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import VideoComponent from './VideoComponent';
 
 const DashBoardPage = () => {
@@ -39,7 +39,7 @@ const DashBoardPage = () => {
 
             console.log("got hereeeeeee", { user: user?.uid, uid: user?._videoTrack?.store?.uid });
 
-            if (mediaType == "video") {
+            if (mediaType === "video") {
                 // Retrieve the remote video track.
                 // videoRef.current.srcObject = new MediaStream([
                 //     user.videoTrack?.getMediaStreamTrack(),
