@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import AgoraRTC from "agora-rtc-sdk-ng";
 import './App.css';
 import { FetchToken } from './agora';
+import { Link } from 'react-router-dom';
 
 const App = () => {
   const videoRef = useRef(null);
@@ -109,6 +110,11 @@ const App = () => {
   return (
     <div className='h-screen'>
       <div className="lg:w-1/4 w-4/5 flex flex-col justify-center item-center m-auto h-full">
+        <div className='flex justify-center'>
+          <Link className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" to="/dashboard">
+            Go to dashboard
+          </Link>
+        </div>
         <div>
           <label for="terminal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select a terminal</label>
           <select onChange={handleTerminalChange} id="terminal" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
