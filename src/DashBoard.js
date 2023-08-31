@@ -5,7 +5,7 @@ import VideoComponent from './VideoComponent';
 const DashBoardPage = () => {
     const [video, setVideo] = useState([])
 
-    const [options, setOptions] = useState({
+    const [options] = useState({
         // Pass your App ID here.
         appId: "e9b38caaab77438fa64316dad3bbda81",
         // Set the channel name.
@@ -19,7 +19,7 @@ const DashBoardPage = () => {
         serverUrl: "https://agora-token-service-production-ee00.up.railway.app",
     })
 
-    const [videoStates, setVideoStates] = useState([
+    const [videoStates] = useState([
         true, true, true,
         true, true
     ]);

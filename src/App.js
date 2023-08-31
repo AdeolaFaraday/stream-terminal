@@ -5,7 +5,7 @@ import { FetchToken } from './agora';
 
 const App = () => {
   const videoRef = useRef(null);
-  const [terminals, setTerminals] = useState([
+  const [terminals] = useState([
     {
       id: 1,
       "name": "Terminal-1"
