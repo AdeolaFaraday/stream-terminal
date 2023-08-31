@@ -83,7 +83,7 @@ const App = () => {
       if (videoRef.current) {
         videoRef.current.srcObject = new MediaStream([
           localVideoTrack?._originMediaStreamTrack
-        ]);;
+        ]);
         startStream()
       }
     } catch (error) {
