@@ -17,3 +17,9 @@ export const FetchToken = async (uid, channelName) => {
             });
     });
 };
+
+
+
+export const APP_ID = "e9b38caaab77438fa64316dad3bbda81"
+
+export const APP_DEFAULT_TOKEN = "007eJxTYKiUdjsfoz774/6bDGYmRySMdLu//jMPfHlwUkjSAXM2dx0FhlTLJGOL5MTExCRzcxNji7REMxNjQ7OUxBTjpKSURAvDQ1M+pFxa9CFFW6KegREIWYAYBJjAJDOYZAGTvAxpmUXFJbrJGYl5eak5jAwGALzOI8c="

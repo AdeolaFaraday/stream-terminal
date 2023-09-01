@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import AgoraRTC from "agora-rtc-sdk-ng";
 import './App.css';
-import { FetchToken } from './agora';
-import { Link } from 'react-router-dom';
+import { APP_DEFAULT_TOKEN, APP_ID, FetchToken } from './agora';
 
 const App = () => {
   const videoRef = useRef(null);
@@ -49,18 +48,11 @@ const App = () => {
     }
   ])
   const [options, setOptions] = useState({
-    // Pass your App ID here.
-    appId: "e9b38caaab77438fa64316dad3bbda81",
-    // Set the channel name.
+    appId: APP_ID,
     channel: "first-channel",
-    // Pass your temp token here.
-    token:
-      "007eJxTYKiUdjsfoz774/6bDGYmRySMdLu//jMPfHlwUkjSAXM2dx0FhlTLJGOL5MTExCRzcxNji7REMxNjQ7OUxBTjpKSURAvDQ1M+pFxa9CFFW6KegREIWYAYBJjAJDOYZAGTvAxpmUXFJbrJGYl5eak5jAwGALzOI8c=",
-    // Set the user ID.
+    token: APP_DEFAULT_TOKEN,
     uid: 1,
     ExpireTime: 3600,
-    // The base URL to your token server. For example, https://agora-token-service-production-92ff.up.railway.app".
-    serverUrl: "https://agora-token-service-production-ee00.up.railway.app",
   })
 
   const agoraEngine = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
@@ -74,30 +66,11 @@ const App = () => {
       setOptions({ ...options, token })
       await agoraEngine.renewToken(options.token);
     });
-
-    // const video = document.getElementById('video-player');
-    // if (
-    //   /iPad|iPhone|iPod/.test(navigator.userAgent) &&
-    //   !window.MSStream
-    // ) {
-    //   video.muted = true;
-    //   video.play();
-    //   video.onplaying = function () {
-    //     video.muted = false;
-    //   };
-    // }
   }, [options?.uid]);
 
   const startWebcamStream = async () => {
     try {
-      // const localVideoTrack = await AgoraRTC.createCameraVideoTrack();
-      // const stream = await navigator.mediaDevices.getUserMedia({ video: true })
-
       if (videoRef.current) {
-        // videoRef.current.srcObject = stream
-        // new MediaStream([
-        //   localVideoTrack?._originMediaStreamTrack
-        // ]);
         startStream()
       }
     } catch (error) {
@@ -108,11 +81,9 @@ const App = () => {
   // http://knowforth.online:3050/fillTerminal
 
   const startStream = async () => {
-    // Create a local audio track from the audio sampled by a microphone.
-    const data = await agoraEngine.join(options.appId, options.channel, options.token, options.uid)
+    const data = await agoraEngine.join(APP_ID, options.channel, options.token, options.uid)
     console.log({ data });
     const localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-    // Create a local video track from the video captured by a camera.
     const localVideoTrack = await AgoraRTC.createCameraVideoTrack();
     if (videoRef.current) {
       videoRef.current.srcObject = new MediaStream([
@@ -127,7 +98,7 @@ const App = () => {
     setOptions({ ...options, uid: +event.target.value })
   }
   return (
-    <div className='h-screen'>
+    <div className='h-screen bg-gray-100'>
       <div className="lg:w-1/4 w-4/5 flex flex-col justify-center item-center m-auto h-full">
         <div>
           <label for="terminal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select a terminal</label>

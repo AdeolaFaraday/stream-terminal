@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import VideoComponent from './VideoComponent';
 import ToggleButton from './ToggleButton';
 import BlanKVideo from './BlankVideo';
+import { APP_DEFAULT_TOKEN, APP_ID } from './agora';
 
 const DashBoardPage = () => {
     const [video, setVideo] = useState([])
@@ -40,23 +41,14 @@ const DashBoardPage = () => {
 
     const [selectedStream, setSelectedStream] = useState(null)
     const [selectedTerminal, setSelectedTerminal] = useState(4)
-    const [videoPauseIds, setVideoPausedIds] = useState([])
 
     const [options] = useState({
-        // Pass your App ID here.
-        appId: "e9b38caaab77438fa64316dad3bbda81",
-        // Set the channel name.
         channel: "first-channel",
-        // Pass your temp token here.
-        token: "007eJxTYKiUdjsfoz774/6bDGYmRySMdLu//jMPfHlwUkjSAXM2dx0FhlTLJGOL5MTExCRzcxNji7REMxNjQ7OUxBTjpKSURAvDQ1M+pFxa9CFFW6KegREIWYAYBJjAJDOYZAGTvAxpmUXFJbrJGYl5eak5jAwGALzOI8c=",
-        // Set the user ID.
         uid: 11,
         ExpireTime: 3600,
-        // The base URL to your token server. For example, https://agora-token-service-production-92ff.up.railway.app".
-        serverUrl: "https://agora-token-service-production-ee00.up.railway.app",
     })
 
-    const [videoStates] = useState([
+    const [videoStates, setVideoStates] = useState([
         {
             id: 1,
             visible: true
@@ -74,7 +66,7 @@ const DashBoardPage = () => {
     const agoraEngine = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
     useEffect(() => {
-        agoraEngine.join(options.appId, options.channel, options.token, options.uid).then((data) => {
+        agoraEngine.join(APP_ID, options.channel, APP_DEFAULT_TOKEN, options.uid).then((data) => {
             console.log({ data });
         });
     }, [])
@@ -107,6 +99,11 @@ const DashBoardPage = () => {
         setSelectedStream(findStream)
     }
 
+    const getSelectedTerminalToggleVisibility = (id) => {
+        const findStream = video?.find((v) => v?.id === +id)
+        return findStream ? true : false
+    }
+
     const getStream = (index) => {
         const stream = video?.find(v => v.id === index + 1)
         return stream ? stream : false
@@ -119,50 +116,53 @@ const DashBoardPage = () => {
                 setSelectedTerminal(index)
                 setSelectedStream(findStream)
             } else {
-                setSelectedStream(null)
+                setSelectedStream({
+                    id: index,
+                    stream: null
+                })
             }
         } else {
-            if (event.target.checked) {
-                const findStream = video?.find((v) => v?.id === index)
-                setSelectedTerminal(index)
-                setSelectedStream(findStream)
-            } else {
-                setSelectedStream(null)
-            }
+            const updatedVideoStates = videoStates.map((video) => {
+                if (video.id === index) {
+                    return {
+                        ...video,
+                        visible: event.target.checked
+                    };
+                }
+                return video;
+            });
+
+            setVideoStates(updatedVideoStates);
         }
     }
 
-    const getStreamPaused = (index) => {
-        return videoPauseIds.includes(index)
-    }
-
     return (
-        <div>
+        <div className='bg-gray-100'>
             <label for="terminal" class="block mb-2 text-lg text-center font-medium text-gray-900 dark:text-white">Video DashBoard</label>
-            <div className="grid grid-col-1 lg:grid-cols-3 gap-4 p-8 bg-gray-100">
+            <div className="grid grid-col-1 lg:grid-cols-3 gap-4 p-8">
                 {videoStates.map((video, index) => (
                     <div key={index} className="relative">
                         {video.visible ? (
-                            <VideoComponent mediaStream={getStream(index)?.stream} isStreamPaused={getStreamPaused(index)} />
+                            <VideoComponent mediaStream={getStream(index)?.stream} />
                         ) : <BlanKVideo />}
                         <div className='flex justify-center mt-3'>
                             <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">Terminal {index + 1}</span>
-                            <ToggleButton isStreamAvailable={getStream(index)} handleToggle={(event) => handleToggle(index, event)} />
+                            {getStream(index)?.stream && <ToggleButton isStreamAvailable={getStream(index) && video.visible} handleToggle={(event) => handleToggle(video.id, event)} />}
                         </div>
                     </div>
                 ))}
             </div>
-            <div className="flex flex-col justify-center w-1/3 m-auto p-8 bg-gray-100">
+            <div className="flex flex-col justify-center lg:w-1/3 w-full m-auto p-8">
                 <div className='mb-4'>
                     <select onChange={handleTerminalChange} id="terminal" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         {terminals?.map((terminal, index) => <option key={index} value={terminal.id}>{terminal?.name}</option>)}
                     </select>
                 </div>
                 <div className="relative">
-                    <VideoComponent mediaStream={selectedStream?.stream} isStreamPaused={getStreamPaused(+selectedStream)} />
+                    <VideoComponent mediaStream={selectedStream?.stream} />
                     <div className='flex justify-center mt-3'>
                         <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">Terminal {selectedTerminal}</span>
-                        <ToggleButton handleToggle={(event) => handleToggle(+selectedTerminal, event, 'drop-down')} isStreamAvailable={selectedStream?.stream && (selectedStream.id === +selectedTerminal)} />
+                        {getSelectedTerminalToggleVisibility(selectedStream?.id) && <ToggleButton handleToggle={(event) => handleToggle(+selectedTerminal, event, 'drop-down')} isStreamAvailable={selectedStream?.stream && (selectedStream.id === +selectedTerminal)} />}
                     </div>
                 </div>
             </div>
