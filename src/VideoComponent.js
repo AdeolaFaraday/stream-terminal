@@ -20,7 +20,10 @@ const VideoComponent = ({ mediaStream }) => {
         playsInline
         autoPlay={true}
         muted
-        className="w-full h-auto rounded bg-neutral-950"
+        style={{
+            transform: 'rotateY(180deg)'
+        }}
+        className="w-full h-72 rounded bg-neutral-950"
     />;
 }
 
