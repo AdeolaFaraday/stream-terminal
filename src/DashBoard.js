@@ -39,7 +39,9 @@ const DashBoardPage = () => {
         }
     ])
 
-    const [selectedStream, setSelectedStream] = useState(null)
+    const [selectedStream, setSelectedStream] = useState({
+        id: 4,
+    })
     const [selectedTerminal, setSelectedTerminal] = useState(4)
 
     const [options] = useState({
@@ -83,12 +85,25 @@ const DashBoardPage = () => {
                 // videoRef.current.srcObject = new MediaStream([
                 //     user.videoTrack?.getMediaStreamTrack(),
                 // ]);
+                console.log({
+                    audio: user?.audioTrack?._originMediaStreamTrack
+                });
                 setVideo(prev => [...prev, {
                     id: user?.uid,
                     stream: new MediaStream([
                         user.videoTrack?.getMediaStreamTrack(),
-                    ])
+                    ]),
+                    audio: user?.audioTrack?._originMediaStreamTrack
                 }])
+                if (user.uid === 4) {
+                    setSelectedStream({
+                        id: 4,
+                        stream: new MediaStream([
+                            user.videoTrack?.getMediaStreamTrack(),
+                        ]),
+                        audio: user?.audioTrack?._originMediaStreamTrack
+                    })
+                }
             }
         });
     }, [])
@@ -143,7 +158,7 @@ const DashBoardPage = () => {
                 {videoStates.map((video, index) => (
                     <div key={index} className="relative">
                         {video.visible ? (
-                            <VideoComponent mediaStream={getStream(index)?.stream} />
+                            <VideoComponent isStreamAvailable={getStream(index) && video.visible} mediaStream={getStream(index)?.stream} audioStream={getStream(index)?.audio} />
                         ) : <BlanKVideo />}
                         <div className='flex justify-center mt-3'>
                             <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">Terminal {index + 1}</span>
@@ -159,7 +174,7 @@ const DashBoardPage = () => {
                     </select>
                 </div>
                 <div className="relative">
-                    <VideoComponent mediaStream={selectedStream?.stream} />
+                    <VideoComponent mediaStream={selectedStream?.stream} audioStream={selectedStream?.audio} isStreamAvailable={selectedStream?.stream && (selectedStream.id === +selectedTerminal)} />
                     <div className='flex justify-center mt-3'>
                         <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">Terminal {selectedTerminal}</span>
                         {getSelectedTerminalToggleVisibility(selectedStream?.id) && <ToggleButton handleToggle={(event) => handleToggle(+selectedTerminal, event, 'drop-down')} isStreamAvailable={selectedStream?.stream && (selectedStream.id === +selectedTerminal)} />}
