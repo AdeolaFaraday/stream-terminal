@@ -21,5 +21,6 @@ export const FetchToken = async (uid, channelName) => {
 
 
 export const APP_ID = "e9b38caaab77438fa64316dad3bbda81"
+export const KNOW_FORTH_API = "http://knowforth.online:3050/fillTerminal"
 
-export const APP_DEFAULT_TOKEN = "007eJxTYKiUdjsfoz774/6bDGYmRySMdLu//jMPfHlwUkjSAXM2dx0FhlTLJGOL5MTExCRzcxNji7REMxNjQ7OUxBTjpKSURAvDQ1M+pFxa9CFFW6KegREIWYAYBJjAJDOYZAGTvAxpmUXFJbrJGYl5eak5jAwGALzOI8c="
+export const APP_DEFAULT_TOKEN = "007eJxTYGB9uf/eaek/24RPbVrT5lOgdKT56DVXx/MhYnEV2zj1QzQUGFItk4wtkhMTE5PMzU2MLdISzUyMDc1SElOMk5JSEi0Mg098SUm+9iVlYlQYMyMDIwMLEIMAE5hkBpMsYJKXIS2zqLhENzkjMS8vNYeJwcgIAIpiJVY="

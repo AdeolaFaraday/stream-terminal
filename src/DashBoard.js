@@ -3,41 +3,13 @@ import React, { useEffect, useState } from 'react';
 import VideoComponent from './VideoComponent';
 import ToggleButton from './ToggleButton';
 import BlanKVideo from './BlankVideo';
-import { APP_ID, FetchToken } from './agora';
+import { APP_DEFAULT_TOKEN, APP_ID, FetchToken, KNOW_FORTH_API } from './agora';
+import axios from 'axios';
 
 const DashBoardPage = () => {
     const [video, setVideo] = useState([])
 
-    const [terminals] = useState([
-        {
-            id: 4,
-            name: "Terminal-4"
-        },
-        {
-            id: 5,
-            name: "Terminal-5"
-        },
-        {
-            id: 6,
-            name: "Terminal-6"
-        },
-        {
-            id: 7,
-            name: "Terminal-7"
-        },
-        {
-            id: 8,
-            name: "Terminal-8"
-        },
-        {
-            id: 9,
-            name: "Terminal-9"
-        },
-        {
-            id: 10,
-            name: "Terminal-10"
-        }
-    ])
+    const [terminals, setTerminals] = useState([])
 
     const [selectedStream, setSelectedStream] = useState({
         id: 4,
@@ -46,7 +18,7 @@ const DashBoardPage = () => {
 
     const [options, setOptions] = useState({
         channel: "first-channel",
-        uid: 12,
+        uid: 22,
         ExpireTime: 3600,
         token: null,
     })
@@ -68,24 +40,43 @@ const DashBoardPage = () => {
 
     const agoraEngine = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
+    const basicAuth = 'Basic ' + btoa('test1' + ':' + 'test6');
+
+    useEffect(() => {
+        axios.get(KNOW_FORTH_API, {
+            headers: {
+                'Authorization': basicAuth
+            }
+        })
+            .then(response => {
+                setTerminals(response?.data?.splice(3))
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }, [])
+
     useEffect(() => {
         FetchToken(options?.uid, options?.channel).then((token) => {
             setOptions({ ...options, token })
         });
-        agoraEngine.on("token-privilege-will-expire", async function () {
-            const token = await FetchToken(options?.uid, options?.channel);
-            setOptions({ ...options, token })
-            await agoraEngine.renewToken(options.token);
-        });
+        // agoraEngine.on("token-privilege-will-expire", async function () {
+        //     const token = await FetchToken(options?.uid, options?.channel);
+        //     setOptions({ ...options, token })
+        //     await agoraEngine.renewToken(options.token);
+        // });
     }, [])
 
+    const joinChannel = async () => {
+        try {
+            await agoraEngine.join(APP_ID, options.channel, options.token, options?.uid)
+        } catch (error) {
+            console.log({ error });
+        }
+    }
+
     useEffect(() => {
-        // if (options.token) {
-        //     console.log({ token: options.token });
-        // }
-        agoraEngine.join(APP_ID, options.channel, options.token, options.uid).then((data) => {
-            console.log({ data });
-        });
+        joinChannel()
     }, [options.token])
 
     useEffect(() => {

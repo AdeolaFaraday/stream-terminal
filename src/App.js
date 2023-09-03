@@ -1,52 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import AgoraRTC from "agora-rtc-sdk-ng";
 import './App.css';
-import { APP_DEFAULT_TOKEN, APP_ID, FetchToken } from './agora';
+import { APP_DEFAULT_TOKEN, APP_ID, FetchToken, KNOW_FORTH_API } from './agora';
+import axios from 'axios';
 
 const App = () => {
   const videoRef = useRef(null);
-  const [terminals] = useState([
-    {
-      id: 1,
-      "name": "Terminal-1"
-    },
-    {
-      id: 2,
-      "name": "Terminal-2"
-    },
-    {
-      id: 3,
-      "name": "Terminal-3"
-    },
-    {
-      id: 4,
-      name: "Terminal-4"
-    },
-    {
-      id: 5,
-      name: "Terminal-5"
-    },
-    {
-      id: 6,
-      name: "Terminal-6"
-    },
-    {
-      id: 7,
-      name: "Terminal-7"
-    },
-    {
-      id: 8,
-      name: "Terminal-8"
-    },
-    {
-      id: 9,
-      name: "Terminal-9"
-    },
-    {
-      id: 10,
-      name: "Terminal-10"
-    }
-  ])
+  const [terminals, setTerminals] = useState([])
   const [options, setOptions] = useState({
     appId: APP_ID,
     channel: "first-channel",
@@ -56,6 +16,22 @@ const App = () => {
   })
 
   const agoraEngine = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+
+  const basicAuth = 'Basic ' + btoa('test1' + ':' + 'test6');
+
+  useEffect(() => {
+    axios.get(KNOW_FORTH_API, {
+      headers: {
+        'Authorization': basicAuth
+      }
+    })
+      .then(response => {
+        setTerminals(response?.data)
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }, [])
 
   useEffect(() => {
     FetchToken(options?.uid, options?.channel).then((token) => {
