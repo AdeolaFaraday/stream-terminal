@@ -62,7 +62,7 @@ const App = () => {
       setOptions({ ...options, token })
     });
     agoraEngine.on("token-privilege-will-expire", async function () {
-      const token = await FetchToken();
+      const token = await FetchToken(options?.uid, options?.channel);
       setOptions({ ...options, token })
       await agoraEngine.renewToken(options.token);
     });

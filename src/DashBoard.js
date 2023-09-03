@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import VideoComponent from './VideoComponent';
 import ToggleButton from './ToggleButton';
 import BlanKVideo from './BlankVideo';
-import { APP_DEFAULT_TOKEN, APP_ID } from './agora';
+import { APP_DEFAULT_TOKEN, APP_ID, FetchToken } from './agora';
 
 const DashBoardPage = () => {
     const [video, setVideo] = useState([])
@@ -44,10 +44,11 @@ const DashBoardPage = () => {
     })
     const [selectedTerminal, setSelectedTerminal] = useState(4)
 
-    const [options] = useState({
+    const [options, setOptions] = useState({
         channel: "first-channel",
         uid: 11,
         ExpireTime: 3600,
+        token: APP_DEFAULT_TOKEN,
     })
 
     const [videoStates, setVideoStates] = useState([
@@ -68,7 +69,15 @@ const DashBoardPage = () => {
     const agoraEngine = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
     useEffect(() => {
-        agoraEngine.join(APP_ID, options.channel, APP_DEFAULT_TOKEN, options.uid).then((data) => {
+        FetchToken(options?.uid, options?.channel).then((token) => {
+            setOptions({ ...options, token })
+        });
+        agoraEngine.on("token-privilege-will-expire", async function () {
+            const token = await FetchToken(options?.uid, options?.channel);
+            setOptions({ ...options, token })
+            await agoraEngine.renewToken(options.token);
+        });
+        agoraEngine.join(APP_ID, options.channel, options.token, options.uid).then((data) => {
             console.log({ data });
         });
     }, [])
