@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import VideoComponent from './VideoComponent';
 import ToggleButton from './ToggleButton';
 import BlanKVideo from './BlankVideo';
-import { APP_DEFAULT_TOKEN, APP_ID, FetchToken } from './agora';
+import { APP_ID, FetchToken } from './agora';
 
 const DashBoardPage = () => {
     const [video, setVideo] = useState([])
@@ -46,9 +46,9 @@ const DashBoardPage = () => {
 
     const [options, setOptions] = useState({
         channel: "first-channel",
-        uid: 11,
+        uid: 12,
         ExpireTime: 3600,
-        token: APP_DEFAULT_TOKEN,
+        token: null,
     })
 
     const [videoStates, setVideoStates] = useState([
@@ -77,10 +77,16 @@ const DashBoardPage = () => {
             setOptions({ ...options, token })
             await agoraEngine.renewToken(options.token);
         });
+    }, [])
+
+    useEffect(() => {
+        // if (options.token) {
+        //     console.log({ token: options.token });
+        // }
         agoraEngine.join(APP_ID, options.channel, options.token, options.uid).then((data) => {
             console.log({ data });
         });
-    }, [])
+    }, [options.token])
 
     useEffect(() => {
         agoraEngine.on("user-published", async (user, mediaType) => {
