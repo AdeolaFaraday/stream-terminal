@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import VideoComponent from './VideoComponent';
 import ToggleButton from './ToggleButton';
 import BlanKVideo from './BlankVideo';
-import { APP_DEFAULT_TOKEN, APP_ID, FetchToken, KNOW_FORTH_API } from './agora';
+import { APP_ID, FetchToken, KNOW_FORTH_API } from './agora';
 import axios from 'axios';
 
 const DashBoardPage = () => {
