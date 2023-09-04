@@ -22,7 +22,8 @@ const App = () => {
   useEffect(() => {
     axios.get(KNOW_FORTH_API, {
       headers: {
-        'Authorization': basicAuth
+        'Authorization': basicAuth,
+        'Referrer-Policy': 'strict-origin-when-cross-origin',
       }
     })
       .then(response => {
